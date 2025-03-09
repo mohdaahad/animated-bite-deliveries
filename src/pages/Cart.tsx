@@ -78,7 +78,7 @@ const Cart = () => {
             </Link>
           </Motion>
         ) : (
-          <div className="space-y-6">
+          <div className="space-y-6 max-w-4xl mx-auto">
             <Motion animation="slide-up" className="rounded-xl bg-background/50 backdrop-blur-sm p-4 border border-border/40">
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-lg font-medium">Your Items</h2>

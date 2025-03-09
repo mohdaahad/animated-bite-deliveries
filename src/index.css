@@ -158,4 +158,51 @@
   .delay-500 {
     animation-delay: 500ms;
   }
+
+  /* Responsive grid layouts */
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
+
+  /* Responsive text sizes */
+  .text-responsive-title {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+  }
+
+  .text-responsive-subtitle {
+    @apply text-lg sm:text-xl md:text-2xl font-medium;
+  }
+
+  .text-responsive-body {
+    @apply text-sm sm:text-base md:text-lg;
+  }
+
+  /* Mobile navigation fixes */
+  .mobile-nav-icon {
+    @apply w-6 h-6 text-foreground;
+  }
+
+  /* Shimmer animation for skeleton loading */
+  .shimmer {
+    background: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-size: 800px 104px;
+    animation: shimmer 1.5s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -468px 0;
+    }
+    100% {
+      background-position: 468px 0;
+    }
+  }
 }

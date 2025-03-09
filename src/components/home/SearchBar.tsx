@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
 import { Motion } from '@/components/ui/motion';
 import { cn } from '@/lib/utils';
@@ -28,6 +29,7 @@ const SearchBar = ({ onSearch, className, placeholder = "Search for restaurants,
   const [showResults, setShowResults] = useState(false);
   const [results, setResults] = useState<any[]>([]);
   const navigate = useNavigate();
+  const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (searchValue.length > 1) {
@@ -41,6 +43,20 @@ const SearchBar = ({ onSearch, className, placeholder = "Search for restaurants,
       setShowResults(false);
     }
   }, [searchValue]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setShowResults(false);
+        setIsFocused(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,18 +85,13 @@ const SearchBar = ({ onSearch, className, placeholder = "Search for restaurants,
     setSearchValue(item.name);
   };
 
-  const handleClickOutside = () => {
-    setShowResults(false);
-    setIsFocused(false);
-  };
-
   return (
-    <Motion animation="slide-down" className={cn("w-full relative", className)}>
+    <Motion animation="slide-down" className={cn("w-full relative", className)} ref={searchRef}>
       <div 
         className={cn(
           "relative w-full rounded-xl overflow-hidden transition-all duration-300",
           isFocused ? "ring-2 ring-primary/30" : "ring-1 ring-border/50",
-          "neo-card p-0 hover:shadow-lg"
+          "bg-background/70 backdrop-blur-sm shadow-sm hover:shadow-md"
         )}
       >
         <form onSubmit={handleSearch} className="flex items-center">
@@ -92,8 +103,10 @@ const SearchBar = ({ onSearch, className, placeholder = "Search for restaurants,
             placeholder={placeholder}
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setTimeout(() => handleClickOutside(), 200)}
+            onFocus={() => {
+              setIsFocused(true);
+              if (searchValue.length > 1) setShowResults(true);
+            }}
             className="flex-1 bg-transparent px-2 py-3 text-foreground outline-none placeholder:text-muted-foreground/70"
           />
           {searchValue && (
@@ -113,7 +126,7 @@ const SearchBar = ({ onSearch, className, placeholder = "Search for restaurants,
       </div>
 
       {showResults && results.length > 0 && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-background rounded-xl border border-border/50 shadow-lg z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-background/95 backdrop-blur-lg rounded-xl border border-border/50 shadow-lg z-50 max-h-64 overflow-y-auto">
           <div className="p-2 space-y-1">
             {results.map((item, index) => (
               <button

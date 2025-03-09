@@ -61,3 +61,15 @@ export const shimmerAnimation = `
 
 // Add skeleton loader classes
 export const skeletonClass = "bg-gradient-to-r from-muted/60 via-muted/80 to-muted/60 bg-[length:400%_100%] animate-[shimmer_1.5s_infinite]";
+
+// Add pulse animation for loading states
+export const pulseAnimation = "animate-pulse";
+
+// Add responsive sizing classes
+export const responsiveContainer = "w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8";
+export const responsiveGrid = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4";
+export const responsiveText = {
+  title: "text-xl sm:text-2xl md:text-3xl font-bold",
+  subtitle: "text-sm sm:text-base md:text-lg text-muted-foreground",
+  body: "text-sm sm:text-base",
+};
