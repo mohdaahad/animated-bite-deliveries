@@ -1,10 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
 import { Motion } from '@/components/ui/motion';
 import { cn } from '@/lib/utils';
 import { applyMicroInteraction } from '@/utils/animations';
 import { useNavigate } from 'react-router-dom';
+import LazyImage from '@/components/ui/LazyImage';
 
 interface SearchBarProps {
   onSearch?: (value: string) => void;

@@ -46,3 +46,18 @@ export const applyMicroInteraction = (type: 'hover' | 'click' | 'both'): string 
 export const getStaggeredDelay = (index: number, baseDelay: number = 50): number => {
   return index * baseDelay;
 };
+
+// Add shimmer animation
+export const shimmerAnimation = `
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+`;
+
+// Add skeleton loader classes
+export const skeletonClass = "bg-gradient-to-r from-muted/60 via-muted/80 to-muted/60 bg-[length:400%_100%] animate-[shimmer_1.5s_infinite]";
