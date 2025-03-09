@@ -9,11 +9,12 @@ import { Motion } from '@/components/ui/motion';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { applyMicroInteraction } from '@/utils/animations';
 import { cn } from '@/lib/utils';
+import { useCart } from '@/contexts/CartContext';
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { isOpen, closeCart, openCart, getItemCount } = useCart();
 
   useEffect(() => {
     // Simulate loading delay for animation
@@ -48,6 +49,8 @@ const Index = () => {
       </div>
     );
   }
+
+  const itemCount = getItemCount();
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -89,24 +92,26 @@ const Index = () => {
         </Motion>
       </main>
 
-      <div className="fixed bottom-4 right-4 md:hidden">
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className={cn(
-            "w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg",
-            "relative",
-            applyMicroInteraction('click')
-          )}
-          aria-label="Open cart"
-        >
-          <ShoppingBag className="w-6 h-6" />
-          <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-black text-white text-xs flex items-center justify-center">
-            2
-          </span>
-        </button>
-      </div>
+      {itemCount > 0 && (
+        <div className="fixed bottom-4 right-4 md:hidden">
+          <button
+            onClick={openCart}
+            className={cn(
+              "w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg",
+              "relative",
+              applyMicroInteraction('click')
+            )}
+            aria-label="Open cart"
+          >
+            <ShoppingBag className="w-6 h-6" />
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-black text-white text-xs flex items-center justify-center">
+              {itemCount}
+            </span>
+          </button>
+        </div>
+      )}
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={isOpen} onClose={closeCart} />
     </div>
   );
 };

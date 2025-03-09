@@ -7,6 +7,7 @@ import { Motion, MotionGroup } from '@/components/ui/motion';
 import FoodItem from '@/components/restaurant/FoodItem';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { cn } from '@/lib/utils';
+import { useCart } from '@/contexts/CartContext';
 
 // Demo restaurant data
 const restaurant = {
@@ -70,11 +71,22 @@ const menuCategories = [
 const Restaurant = () => {
   const { id } = useParams<{ id: string }>();
   const [activeCategory, setActiveCategory] = useState('burgers');
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { isOpen, closeCart, addItem } = useCart();
 
   const handleAddToCart = (itemId: string) => {
-    console.log('Adding to cart:', itemId);
-    // Implement add to cart functionality
+    const foodItem = foodItems.find(item => item.id === itemId);
+    
+    if (foodItem) {
+      addItem({
+        id: foodItem.id,
+        name: foodItem.name,
+        price: foodItem.price,
+        quantity: 1,
+        image: foodItem.image,
+        restaurantId: id || '1',
+        restaurantName: restaurant.name
+      });
+    }
   };
 
   return (
@@ -150,6 +162,7 @@ const Restaurant = () => {
                     price={item.price}
                     image={item.image}
                     restaurantId={id || '1'}
+                    restaurantName={restaurant.name}
                     onAddToCart={() => handleAddToCart(item.id)}
                   />
                 ))}
@@ -159,7 +172,7 @@ const Restaurant = () => {
         </div>
       </div>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={isOpen} onClose={closeCart} />
     </div>
   );
 };

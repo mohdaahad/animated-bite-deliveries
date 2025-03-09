@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { applyMicroInteraction } from '@/utils/animations';
+import { useCart } from '@/contexts/CartContext';
 
 interface FoodItemProps {
   id: string;
@@ -11,6 +12,7 @@ interface FoodItemProps {
   price: number;
   image: string;
   restaurantId: string;
+  restaurantName?: string;
   className?: string;
   onAddToCart?: () => void;
 }
@@ -22,12 +24,26 @@ const FoodItem = ({
   price,
   image,
   restaurantId,
+  restaurantName,
   className,
   onAddToCart,
 }: FoodItemProps) => {
+  const { addItem } = useCart();
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    addItem({
+      id,
+      name,
+      price,
+      quantity: 1,
+      image,
+      restaurantId,
+      restaurantName
+    });
+    
     if (onAddToCart) {
       onAddToCart();
     }

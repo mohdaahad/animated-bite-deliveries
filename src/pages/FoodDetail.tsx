@@ -7,6 +7,7 @@ import { Motion } from '@/components/ui/motion';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { cn } from '@/lib/utils';
 import { applyMicroInteraction } from '@/utils/animations';
+import { useCart } from '@/contexts/CartContext';
 
 // Demo food item data
 const foodItem = {
@@ -64,8 +65,8 @@ const FoodDetail = () => {
     cheese: 'american',
     extras: [],
   });
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const { isOpen, closeCart, openCart, addItem } = useCart();
 
   const handleIncrement = () => {
     setQuantity(prev => prev + 1);
@@ -131,11 +132,17 @@ const FoodDetail = () => {
   };
 
   const handleAddToCart = () => {
-    console.log('Adding to cart:', {
-      ...foodItem,
+    const totalPrice = calculateTotalPrice();
+    
+    addItem({
+      id: `${id}-${Date.now()}`, // Make unique in case of customizations
+      name: foodItem.name,
+      price: totalPrice / quantity, // Price per item with customizations
       quantity,
-      customizations: selections,
-      totalPrice: calculateTotalPrice(),
+      image: foodItem.image,
+      restaurantId: restaurantId || '1',
+      restaurantName: foodItem.restaurantName,
+      customizations: selections
     });
     
     setIsAddedToCart(true);
@@ -290,7 +297,7 @@ const FoodDetail = () => {
         </div>
       </div>
 
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <CartDrawer isOpen={isOpen} onClose={closeCart} />
     </div>
   );
 };

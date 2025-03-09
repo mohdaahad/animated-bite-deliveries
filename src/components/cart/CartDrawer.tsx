@@ -1,28 +1,12 @@
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { ShoppingBag, X, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import CartItem from './CartItem';
 import { Motion } from '@/components/ui/motion';
 import { applyMicroInteraction } from '@/utils/animations';
-
-// Demo cart items
-const initialCartItems = [
-  {
-    id: '1',
-    name: 'Cheeseburger Deluxe',
-    price: 12.99,
-    quantity: 1,
-    image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=2899',
-  },
-  {
-    id: '2',
-    name: 'Margherita Pizza',
-    price: 14.99,
-    quantity: 2,
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070',
-  },
-];
+import { useCart } from '@/contexts/CartContext';
+import { Link } from 'react-router-dom';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -30,7 +14,14 @@ interface CartDrawerProps {
 }
 
 const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
-  const [cartItems, setCartItems] = useState(initialCartItems);
+  const { 
+    items, 
+    updateQuantity, 
+    removeItem, 
+    getSubtotal, 
+    getDeliveryFee, 
+    getTotal 
+  } = useCart();
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
 
   useEffect(() => {
@@ -53,28 +44,22 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
   };
 
   const handleIncrement = (id: string) => {
-    setCartItems(prev => 
-      prev.map(item => 
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
+    const item = items.find(item => item.id === id);
+    if (item) {
+      updateQuantity(id, item.quantity + 1);
+    }
   };
 
   const handleDecrement = (id: string) => {
-    setCartItems(prev => 
-      prev.map(item => 
-        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-      )
-    );
+    const item = items.find(item => item.id === id);
+    if (item && item.quantity > 1) {
+      updateQuantity(id, item.quantity - 1);
+    }
   };
 
-  const handleRemove = (id: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-  const deliveryFee = 2.99;
-  const total = subtotal + deliveryFee;
+  const subtotal = getSubtotal();
+  const deliveryFee = getDeliveryFee();
+  const total = getTotal();
 
   if (!isOpen && !isAnimatingOut) return null;
 
@@ -100,7 +85,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
             <ShoppingBag className="w-5 h-5" />
             <h2 className="text-lg font-medium">Your Cart</h2>
             <div className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-sm">
-              {cartItems.length}
+              {items.length}
             </div>
           </div>
           <button
@@ -113,12 +98,12 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
         </div>
         
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {cartItems.length > 0 ? (
+          {items.length > 0 ? (
             <MotionCartItems 
-              items={cartItems} 
+              items={items} 
               onIncrement={handleIncrement} 
               onDecrement={handleDecrement} 
-              onRemove={handleRemove} 
+              onRemove={removeItem} 
             />
           ) : (
             <Motion animation="fade-in" className="flex flex-col items-center justify-center h-full">
@@ -133,7 +118,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
           )}
         </div>
 
-        {cartItems.length > 0 && (
+        {items.length > 0 && (
           <div className="p-4 border-t border-border">
             <div className="space-y-2 mb-4">
               <div className="flex justify-between items-center">
@@ -142,7 +127,7 @@ const CartDrawer = ({ isOpen, onClose }: CartDrawerProps) => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">Delivery Fee</span>
-                <span>${deliveryFee.toFixed(2)}</span>
+                <span>{deliveryFee === 0 ? 'Free' : `$${deliveryFee.toFixed(2)}`}</span>
               </div>
               <div className="flex justify-between items-center font-medium pt-2 border-t border-border">
                 <span>Total</span>
@@ -174,7 +159,7 @@ const MotionCartItems = ({
   onDecrement, 
   onRemove 
 }: { 
-  items: typeof initialCartItems,
+  items: any[],
   onIncrement: (id: string) => void,
   onDecrement: (id: string) => void,
   onRemove: (id: string) => void,
