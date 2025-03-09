@@ -4,6 +4,7 @@ import { Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { applyMicroInteraction } from '@/utils/animations';
 import { useCart } from '@/contexts/CartContext';
+import LazyImage from '@/components/ui/LazyImage';
 
 interface FoodItemProps {
   id: string;
@@ -67,7 +68,7 @@ const FoodItem = ({
         </div>
       </div>
       <div className="w-24 h-24 relative">
-        <img
+        <LazyImage
           src={image}
           alt={name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

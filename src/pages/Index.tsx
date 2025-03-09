@@ -14,6 +14,7 @@ import { useCart } from '@/contexts/CartContext';
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const { isOpen, closeCart, openCart, getItemCount } = useCart();
 
   useEffect(() => {
@@ -27,7 +28,8 @@ const Index = () => {
 
   const handleSearch = (searchValue: string) => {
     console.log('Searching for:', searchValue);
-    // Implement search functionality
+    setSearchQuery(searchValue);
+    // Filtering happens in the search component itself
   };
 
   const handleCategorySelect = (categoryId: string) => {

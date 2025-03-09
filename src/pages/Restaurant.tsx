@@ -8,6 +8,7 @@ import FoodItem from '@/components/restaurant/FoodItem';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { cn } from '@/lib/utils';
 import { useCart } from '@/contexts/CartContext';
+import LazyImage from '@/components/ui/LazyImage';
 
 // Demo restaurant data
 const restaurant = {
@@ -96,7 +97,7 @@ const Restaurant = () => {
       <div className="relative">
         <div className="h-64 w-full relative">
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-transparent z-10" />
-          <img
+          <LazyImage
             src={restaurant.image}
             alt={restaurant.name}
             className="w-full h-full object-cover"

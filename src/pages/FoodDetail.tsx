@@ -8,6 +8,7 @@ import CartDrawer from '@/components/cart/CartDrawer';
 import { cn } from '@/lib/utils';
 import { applyMicroInteraction } from '@/utils/animations';
 import { useCart } from '@/contexts/CartContext';
+import LazyImage from '@/components/ui/LazyImage';
 
 // Demo food item data
 const foodItem = {
@@ -66,6 +67,7 @@ const FoodDetail = () => {
     extras: [],
   });
   const [isAddedToCart, setIsAddedToCart] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const { isOpen, closeCart, openCart, addItem } = useCart();
 
   const handleIncrement = () => {
@@ -158,10 +160,11 @@ const FoodDetail = () => {
       <div className="pt-16 pb-20">
         <div className="w-full h-72 relative">
           <Motion animation="fade-in">
-            <img
+            <LazyImage
               src={foodItem.image}
               alt={foodItem.name}
               className="w-full h-full object-cover"
+              onLoad={() => setImageLoaded(true)}
             />
           </Motion>
         </div>

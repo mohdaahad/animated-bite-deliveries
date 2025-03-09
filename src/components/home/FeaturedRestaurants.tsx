@@ -4,6 +4,7 @@ import { Star, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Motion, MotionGroup } from '@/components/ui/motion';
 import { applyMicroInteraction } from '@/utils/animations';
+import LazyImage from '@/components/ui/LazyImage';
 
 interface Restaurant {
   id: string;
@@ -90,10 +91,11 @@ const FeaturedRestaurants = ({
             >
               <div className="relative w-full h-48 overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30 z-10" />
-                <img
+                <LazyImage
                   src={restaurant.image}
                   alt={restaurant.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover"
+                  placeholderClassName="bg-muted/50"
                 />
                 <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center z-20">
                   <Star className="w-3 h-3 text-yellow-500 fill-yellow-500 mr-1" />
