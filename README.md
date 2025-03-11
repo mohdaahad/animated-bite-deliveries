@@ -1,16 +1,10 @@
-# Welcome to your Lovable project
+# Welcome to my project
 
 ## Project info
-
-**URL**: https://lovable.dev/projects/4ac42242-45a7-4488-9b47-558389208c5d
 
 ## How can I edit this code?
 
 There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/4ac42242-45a7-4488-9b47-558389208c5d) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
 
@@ -18,7 +12,7 @@ Changes made via Lovable will be committed automatically to this repo.
 
 If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+The only requirement is having Node.js & npm installed - 
 
 Follow these steps:
 
@@ -60,9 +54,6 @@ This project is built with .
 - shadcn-ui
 - Tailwind CSS
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/4ac42242-45a7-4488-9b47-558389208c5d) and click on Share -> Publish.
 
 ## I want to use a custom domain - is that possible?
 
